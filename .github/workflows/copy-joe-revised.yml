@@ -1,4 +1,4 @@
-name: Unzip Joe Theme
+name: Unzip Joe Theme in awbk
 
 # 触发条件：手动触发
 on:
@@ -39,11 +39,11 @@ jobs:
 
       # 4. 解压文件到目标目录
       - name: Unzip Joe theme
-        run: unzip "${{ github.event.inputs.zip_filename }}" -d target/usr/themes/
+        run: cd target && unzip "${{ github.event.inputs.zip_filename }}" -d usr/themes/
 
-      # 5. 删除 ZIP 文件
+      # 5. 删除 ZIP 文件 (可选)
       - name: Remove ZIP file
-        run: rm "${{ github.event.inputs.zip_filename }}"
+        run: cd target && rm "${{ github.event.inputs.zip_filename }}"
 
       # 6. 提交更改到目标仓库
       - name: Commit and push changes
