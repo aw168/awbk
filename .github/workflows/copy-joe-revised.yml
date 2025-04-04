@@ -1,4 +1,4 @@
-name: Copy Files from Joe-Revised to awbk
+name: Copy Joe Theme from Divimu to awbk
 
 # 触发条件：手动触发
 on:
@@ -10,15 +10,15 @@ permissions:
   actions: read
 
 jobs:
-  copy-files:
+  copy-theme:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 检出源仓库（Joe-Revised）
+      # 1. 检出源仓库（Divimu/typecho-vercel）
       - name: Checkout source repository
         uses: actions/checkout@v3
         with:
-          repository: aw168/Joe-Revised
+          repository: Divimu/typecho-vercel
           path: source
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 需要在 awbk 仓库中配置名为 PERSONAL_ACCESS_TOKEN 的 Secret
 
@@ -30,13 +30,13 @@ jobs:
           path: target
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 同样使用 PERSONAL_ACCESS_TOKEN
 
-      # 3. 复制文件
-      - name: Copy files from source to target
+      # 3. 复制 Joe 主题文件
+      - name: Copy Joe theme files
         run: |
           # 创建目标目录（如果不存在）
-          mkdir -p target/usr/themes/Joe-Revised
-          # 复制源仓库的所有内容到目标仓库的指定目录
-          cp -r source/* target/usr/themes/Joe-Revised/
+          mkdir -p target/usr/themes/Joe
+          # 复制源仓库中 Joe 目录下的所有内容到目标仓库的 Joe 目录
+          cp -r source/usr/themes/Joe/* target/usr/themes/Joe/
 
       # 4. 提交更改到目标仓库
       - name: Commit and push changes
@@ -44,6 +44,6 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add usr/themes/Joe-Revised
-          git commit -m "Add Joe-Revised theme files"
+          git add usr/themes/Joe
+          git commit -m "Add Joe theme files from Divimu/typecho-vercel"
           git push
