@@ -34,7 +34,7 @@ $db->addServer(array (
     'charset' => 'utf8mb4',
     'database' => 'test',
     'engine' => 'InnoDB',
-    'sslCa' => '/isrgrootx1.pem', // Ensure this path is correct
+    'sslCa' => 'isrgrootx1.pem', // *** VERY IMPORTANT: Double-check this path! ***
     'sslVerify' => true,
 ), Typecho\Db::READ | Typecho\Db::WRITE);
 
