@@ -29,8 +29,8 @@ $db = new Typecho\Db('Pdo_Mysql', 'typecho_');
 $db->addServer(array (
     'host' => 'gateway01.us-west-2.prod.aws.tidbcloud.com',
     'port' => 4000,
-    'user' => 'J6jMVqXQYxebxFR.root',
-    'password' => 'N1IJS2NklJwBHuLQ',
+    'user' => '2ActdKRgos3DVzV.root',
+    'password' => 'DAACmx7H3a03R3ve',
     'charset' => 'utf8mb4',
     'database' => 'test',
     'engine' => 'InnoDB',
