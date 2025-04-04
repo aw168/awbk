@@ -1,8 +1,13 @@
-name: Copy Joe Theme from Divimu to awbk
+name: Unzip Joe Theme
 
 # 触发条件：手动触发
 on:
   workflow_dispatch:
+    inputs:
+      zip_filename:
+        description: '要解压的 ZIP 文件名 (默认为 Joe.zip)'
+        required: true
+        default: 'Joe.zip'
 
 # 权限设置
 permissions:
@@ -10,40 +15,42 @@ permissions:
   actions: read
 
 jobs:
-  copy-theme:
+  unzip-theme:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 检出源仓库（Divimu/typecho-vercel）
-      - name: Checkout source repository
-        uses: actions/checkout@v3
-        with:
-          repository: Divimu/typecho-vercel
-          path: source
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 需要在 awbk 仓库中配置名为 PERSONAL_ACCESS_TOKEN 的 Secret
-
-      # 2. 检出目标仓库（awbk）
+      # 1. 检出目标仓库（aw168/awbk）
       - name: Checkout target repository
         uses: actions/checkout@v3
         with:
           repository: aw168/awbk
           path: target
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 同样使用 PERSONAL_ACCESS_TOKEN
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 需要在 awbk 仓库中配置名为 PERSONAL_ACCESS_TOKEN 的 Secret
 
-      # 3. 复制 Joe 主题文件
-      - name: Copy Joe theme files
-        run: |
-          # 创建目标目录（如果不存在）
-          mkdir -p target/usr/themes/Joe
-          # 复制源仓库中 Joe 目录下的所有内容到目标仓库的 Joe 目录
-          cp -r source/usr/themes/Joe/* target/usr/themes/Joe/
+      # 2. 设置 up Python (用于 unzip 命令)
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
 
-      # 4. 提交更改到目标仓库
+      # 3. 安装 unzip 工具
+      - name: Install unzip
+        run: sudo apt-get update && sudo apt-get install -y unzip
+
+      # 4. 解压文件到目标目录
+      - name: Unzip Joe theme
+        run: unzip "${{ github.event.inputs.zip_filename }}" -d target/usr/themes/
+
+      # 5. 删除 ZIP 文件
+      - name: Remove ZIP file
+        run: rm "${{ github.event.inputs.zip_filename }}"
+
+      # 6. 提交更改到目标仓库
       - name: Commit and push changes
         working-directory: target
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add usr/themes/Joe
-          git commit -m "Add Joe theme files from Divimu/typecho-vercel"
+          git commit -m "Add Joe theme from ${{ github.event.inputs.zip_filename }}"
           git push
