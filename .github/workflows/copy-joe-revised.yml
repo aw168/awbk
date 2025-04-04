@@ -1,0 +1,49 @@
+name: Copy Files from Joe-Revised to awbk
+
+# 触发条件：手动触发
+on:
+  workflow_dispatch:
+
+# 权限设置
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  copy-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 检出源仓库（Joe-Revised）
+      - name: Checkout source repository
+        uses: actions/checkout@v3
+        with:
+          repository: aw168/Joe-Revised
+          path: source
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 需要在 awbk 仓库中配置名为 PERSONAL_ACCESS_TOKEN 的 Secret
+
+      # 2. 检出目标仓库（awbk）
+      - name: Checkout target repository
+        uses: actions/checkout@v3
+        with:
+          repository: aw168/awbk
+          path: target
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # 同样使用 PERSONAL_ACCESS_TOKEN
+
+      # 3. 复制文件
+      - name: Copy files from source to target
+        run: |
+          # 创建目标目录（如果不存在）
+          mkdir -p target/usr/themes/Joe-Revised
+          # 复制源仓库的所有内容到目标仓库的指定目录
+          cp -r source/* target/usr/themes/Joe-Revised/
+
+      # 4. 提交更改到目标仓库
+      - name: Commit and push changes
+        working-directory: target
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add usr/themes/Joe-Revised
+          git commit -m "Add Joe-Revised theme files"
+          git push
