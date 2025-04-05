@@ -17,22 +17,22 @@ require_once __TYPECHO_ROOT_DIR__ . '/var/Typecho/Common.php';
 // init
 \Typecho\Common::init();
 
-// 配置数据库连接信息
+// 配置数据库连接信息（从环境变量获取）
 $dbConfig = array (
-    'host' => 'gateway01.us-west-2.prod.aws.tidbcloud.com',
-    'port' => 4000,
-    'user' => '2ActdKRgos3DVzV.root',
-    'password' => 'DAACmx7H3a03R3ve',
-    'charset' => 'utf8mb4',
-    'database' => 'test',
-    'engine' => 'InnoDB',
-    'sslCa' => __TYPECHO_ROOT_DIR__ . '/isrgrootx1.pem', // 请将 isrgrootx1.pem 文件放在 index.php 所在的目录，并使用此路径
-    'sslVerify' => true,
+    'host' => getenv('TYPECHO_DB_HOST'),
+    'port' => getenv('TYPECHO_DB_PORT') ?: 4000,
+    'user' => getenv('TYPECHO_DB_USER'),
+    'password' => getenv('TYPECHO_DB_PASSWORD'),
+    'charset' => getenv('TYPECHO_DB_CHARSET') ?: 'utf8mb4',
+    'database' => getenv('TYPECHO_DB_DATABASE'),
+    'engine' => getenv('TYPECHO_DB_ENGINE') ?: 'InnoDB',
+    'sslCa' => getenv('TYPECHO_DB_SSL_CA') ? __TYPECHO_ROOT_DIR__ . '/' . getenv('TYPECHO_DB_SSL_CA') : null,
+    'sslVerify' => getenv('TYPECHO_DB_SSL_VERIFY') === 'true',
 );
 
 // 检查 SSL CA 文件是否存在
-if (!file_exists($dbConfig['sslCa'])) {
-    die('错误：SSL CA 证书文件 ' . $dbConfig['sslCa'] . ' 不存在！请上传该文件到服务器。');
+if ($dbConfig['sslCa'] && !file_exists($dbConfig['sslCa'])) {
+    die('错误：SSL CA 证书文件 ' . $dbConfig['sslCa'] . ' 不存在！请将 ' . getenv('TYPECHO_DB_SSL_CA') . ' 文件放在 index.php 所在的目录。');
 }
 
 // config db
@@ -42,7 +42,7 @@ $db->addServer($dbConfig, \Typecho\Db::READ | \Typecho\Db::WRITE);
 try {
     \Typecho\Db::set($db);
     // 可选：测试数据库连接是否成功
-    $db->query('SELECT 1');
+    // $db->query('SELECT 1');
     // echo '数据库连接成功！';
 } catch (\Typecho\Db\Exception $e) {
     die('Error establishing a database connection: ' . $e->getMessage());
