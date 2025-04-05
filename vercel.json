@@ -4,29 +4,27 @@
       "runtime": "vercel-php@0.7.3"
     }
   },
-  "routes": [
+  "redirects": [
     {
-      "src": "http://awbk.pp.ua/(.*)",
-      "dest": "https://awbk.pp.ua/$1",
-      "permanent": true,
-      "statusCode": 301
+      "source": "http://awbk.pp.ua/(.*)",
+      "destination": "https://awbk.pp.ua/$1",
+      "permanent": true
     },
     {
-      "src": "http://www.awbk.pp.ua/(.*)",
-      "dest": "https://awbk.pp.ua/$1",
-      "permanent": true,
-      "statusCode": 301
+      "source": "http://www.awbk.pp.ua/(.*)",
+      "destination": "https://awbk.pp.ua/$1",
+      "permanent": true
     },
     {
-      "src": "https://www.awbk.pp.ua/(.*)",
-      "dest": "https://awbk.pp.ua/$1",
-      "permanent": true,
-      "statusCode": 301
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/api/index.php"
+      "source": "https://www.awbk.pp.ua/(.*)",
+      "destination": "https://awbk.pp.ua/$1",
+      "permanent": true
     }
   ],
-  "redirects": []
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.php"
+    }
+  ]
 }
