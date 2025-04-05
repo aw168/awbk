@@ -4,5 +4,24 @@
       "runtime": "vercel-php@0.7.3"
     }
   },
-  "routes": [{ "src": "/(.*)", "dest": "/api/index.php" }]
+  "routes": [
+    { "src": "/(.*)", "dest": "/api/index.php" }
+  ],
+  "redirects": [
+    {
+      "source": "http://awbk.pp.ua/:path*",
+      "destination": "https://awbk.pp.ua/:path*",
+      "permanent": true
+    },
+    {
+      "source": "http://www.awbk.pp.ua/:path*",
+      "destination": "https://awbk.pp.ua/:path*",
+      "permanent": true
+    },
+    {
+      "source": "https://www.awbk.pp.ua/:path*",
+      "destination": "https://awbk.pp.ua/:path*",
+      "permanent": true
+    }
+  ]
 }
