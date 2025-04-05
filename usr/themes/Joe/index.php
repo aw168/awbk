@@ -5,7 +5,7 @@
  * 
  * @package Joe再续前缘
  * @author 易航
- * @version 1.34
+ * @version 1.40
  * @link http://blog.bri6.cn
  */
 
