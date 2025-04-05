@@ -4,29 +4,5 @@
       "runtime": "vercel-php@0.7.3"
     }
   },
-  "redirects": [
-    {
-      "source": "http://awbk.pp.ua/(.*)",
-      "destination": "https://awbk.pp.ua/$1",
-      "permanent": true
-    },
-    {
-      "source": "http://www.awbk.pp.ua/(.*)",
-      "destination": "https://awbk.pp.ua/$1",
-      "permanent": true
-    },
-    {
-      "source": "https://www.awbk.pp.ua/(.*)",
-      "destination": "https://awbk.pp.ua/$1",
-      "permanent": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/api/index.php"
-    }
-  ]
+  "routes": [{ "src": "/(.*)", "dest": "/api/index.php" }]
 }
-
-
