@@ -1,28 +1,8 @@
 {
-  "builds": [
-    {
-      "src": "*.php",
-      "use": "vercel-php@0.7.3"
-    },
-    {
-      "src": "api/*.php",
-      "use": "vercel-php@0.7.3"
-    },
-    {
-      "src": "public/**/*",
-      "use": "@vercel/static"
+  "functions": {
+    "api/index.php": {
+      "runtime": "vercel-php@0.5.5"
     }
-  ],
-  "routes": [
-    { "src": "/(wp-content|wp-includes|wp-admin)/(.*)", "dest": "/$1/$2" },
-    { "src": "/public/(.*)", "dest": "/public/$1" },
-    { "src": "/(.*)", "dest": "/api/index.php" }
-  ],
-  "redirects": [
-    {
-      "source": "http://awbk.pp.ua/:path*",
-      "destination": "https://awbk.pp.ua/:path*",
-      "permanent": true
-    }
-  ]
+  },
+  "routes": [{ "src": "/(.*)", "dest": "/api/index.php" }]
 }
