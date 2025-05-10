@@ -1,0 +1,6 @@
+# 开启重写引擎
+RewriteEngine On
+
+# 站点地图重写规则
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+RewriteRule ^robots\.txt$ robots.php [L] 
