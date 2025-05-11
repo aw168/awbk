@@ -1,6 +1,0 @@
-<?php
-/**
- * 站点地图入口点
- */
-include_once 'sitemap.php';
-?> 
